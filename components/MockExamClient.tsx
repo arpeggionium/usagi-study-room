@@ -15,6 +15,7 @@ import {
 } from "@/lib/progress/localMockExamRepository";
 import { loadProgress, recordAnswers } from "@/lib/progress/localProgressRepository";
 import { getQuestionById, getRandomQuestions } from "@/lib/questions/repository";
+import { useQuestionAutoScroll } from "@/lib/hooks/useQuestionAutoScroll";
 import type { Question } from "@/types/question";
 
 type QuestionResult = {
@@ -48,6 +49,7 @@ export function MockExamClient() {
   const questions = useMemo(() => (session ? getQuestions(session) : []), [session]);
   const answeredCount = session ? Object.keys(session.answers).length : 0;
   const currentQuestion = session && questions[session.currentIndex];
+  const { questionTopRef, scheduleQuestionScroll } = useQuestionAutoScroll(currentQuestion?.id);
 
   function startNewExam() {
     const questionIds = getRandomQuestions(125).map((question) => question.id);
@@ -63,7 +65,14 @@ export function MockExamClient() {
   function answerQuestion(choiceId: string) {
     if (!session || !currentQuestion) return;
     const nextIndex = Math.min(session.currentIndex + 1, questions.length - 1);
+    if (nextIndex !== session.currentIndex) scheduleQuestionScroll();
     save({ answers: { ...session.answers, [currentQuestion.id]: choiceId }, currentIndex: nextIndex });
+  }
+
+  function goToQuestion(index: number) {
+    if (!session || index === session.currentIndex) return;
+    scheduleQuestionScroll();
+    save({ currentIndex: index });
   }
 
   function toggleReview() {
@@ -167,7 +176,7 @@ export function MockExamClient() {
                   <button
                     key={question.id}
                     type="button"
-                    onClick={() => save({ currentIndex: index })}
+                    onClick={() => goToQuestion(index)}
                     aria-label={`問題 ${index + 1}: ${review ? "見直し" : answered ? "回答済み" : "未回答"}`}
                     className={`grid aspect-square place-items-center rounded-xl text-sm font-black focus:outline-none focus:ring-4 focus:ring-peach ${
                       review ? "bg-berry text-white" : answered ? "bg-mint text-leaf" : "bg-cream text-ink/65"
@@ -182,7 +191,7 @@ export function MockExamClient() {
           </section>
         ) : null}
 
-        <section className="surface">
+        <section ref={questionTopRef} className="surface scroll-mt-5">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <p className="text-sm font-black text-ink/65">第{currentQuestion.examRound}回・問題 {currentQuestion.questionNumber}</p>
             <button
@@ -221,10 +230,10 @@ export function MockExamClient() {
         </section>
 
         <section className="grid gap-3 sm:grid-cols-2">
-          <ActionButton onClick={() => save({ currentIndex: Math.max(0, session.currentIndex - 1) })} variant="soft" disabled={session.currentIndex === 0}>
+          <ActionButton onClick={() => goToQuestion(Math.max(0, session.currentIndex - 1))} variant="soft" disabled={session.currentIndex === 0}>
             前の問題
           </ActionButton>
-          <ActionButton onClick={() => save({ currentIndex: Math.min(questions.length - 1, session.currentIndex + 1) })} variant="soft" disabled={session.currentIndex === questions.length - 1}>
+          <ActionButton onClick={() => goToQuestion(Math.min(questions.length - 1, session.currentIndex + 1))} variant="soft" disabled={session.currentIndex === questions.length - 1}>
             次の問題
           </ActionButton>
         </section>

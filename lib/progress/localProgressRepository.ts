@@ -205,6 +205,18 @@ export function getRecentlyAnsweredQuestionIds(progress = loadProgress(), limit 
   return [...new Set(progress.records.slice(-limit).reverse().map((record) => record.questionId))];
 }
 
+export function getEverCorrectQuestionIds(progress = loadProgress()): string[] {
+  const ids = new Set(
+    Object.values(progress.questionStats)
+      .filter((stats) => stats.correctCount > 0)
+      .map((stats) => stats.questionId),
+  );
+  for (const record of progress.records) {
+    if (record.isCorrect) ids.add(record.questionId);
+  }
+  return [...ids];
+}
+
 export function getDailyStudySummaries(
   progress = loadProgress(),
 ): Record<string, DailyStudySummary> {

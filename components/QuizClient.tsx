@@ -8,9 +8,10 @@ import { ActionButton } from "@/components/ActionButton";
 import { AppShell } from "@/components/AppShell";
 import { Mascot } from "@/components/Mascot";
 import { getMascotReaction, type MascotReaction } from "@/data/mascot-reactions";
-import { getAllQuestions, getQuestionsByCategory, getQuestionsByRound, getRandomQuestions } from "@/lib/questions/repository";
+import { getAllQuestions, getChallengeQuestions, getQuestionsByCategory, getQuestionsByRound } from "@/lib/questions/repository";
 import { getExamRoundSession, recordExamRoundAnswer, resetExamRoundSession } from "@/lib/progress/localExamSessionRepository";
-import { getRecentlyAnsweredQuestionIds, loadProgress, recordAnswer } from "@/lib/progress/localProgressRepository";
+import { getEverCorrectQuestionIds, loadProgress, recordAnswer } from "@/lib/progress/localProgressRepository";
+import { useQuestionAutoScroll } from "@/lib/hooks/useQuestionAutoScroll";
 import type { Question } from "@/types/question";
 
 type AnswerState = {
@@ -24,7 +25,7 @@ function buildQuestions(
   category: string | null,
   ids: string | null,
   round: string | null,
-  recentlyAnsweredIds: string[],
+  everCorrectQuestionIds: string[],
 ): Question[] {
   if (ids) {
     const idSet = ids.split(",").filter(Boolean);
@@ -42,7 +43,7 @@ function buildQuestions(
     return getQuestionsByRound(round);
   }
 
-  return getRandomQuestions(10, recentlyAnsweredIds);
+  return getChallengeQuestions({ everCorrectQuestionIds });
 }
 
 export function QuizClient() {
@@ -81,11 +82,12 @@ function QuizSession({ query }: { query: string }) {
         searchParams.get("category"),
         searchParams.get("ids"),
         searchParams.get("round"),
-        getRecentlyAnsweredQuestionIds(savedProgress),
+        getEverCorrectQuestionIds(savedProgress),
       ),
     [savedProgress, searchParams],
   );
   const question = questions[currentIndex];
+  const { questionTopRef, scheduleQuestionScroll } = useQuestionAutoScroll(question?.id);
 
   function handleAnswer(choiceId: string) {
     if (!question || answer) {
@@ -119,6 +121,7 @@ function QuizSession({ query }: { query: string }) {
       return;
     }
 
+    scheduleQuestionScroll();
     setCurrentIndex((index) => index + 1);
     setAnswer(null);
   }
@@ -204,7 +207,7 @@ function QuizSession({ query }: { query: string }) {
             compact
           />
         ) : null}
-        <section className="surface">
+        <section ref={questionTopRef} className="surface scroll-mt-5">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <p className="rounded-full bg-mint px-3 py-1 text-sm font-black text-leaf">
               {currentIndex + 1}/{questions.length}問目
@@ -214,6 +217,9 @@ function QuizSession({ query }: { query: string }) {
             </p>
           </div>
           <p className="mt-4 text-sm font-black text-berry">{question.category}</p>
+          {mode === "challenge" ? (
+            <p className="mt-2 text-sm font-bold text-ink/60">まだ正解していない問題を優先して出題しています。</p>
+          ) : null}
           <h1 className="mt-2 text-xl font-black leading-8 text-ink">
             {question.questionText}
           </h1>

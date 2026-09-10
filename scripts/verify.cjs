@@ -45,6 +45,31 @@ for (const [category, count] of Object.entries(questionDataReport.categoryCounts
 const randomQuestions = questionRepo.getRandomQuestions(10);
 assert.equal(randomQuestions.length, 10);
 assert.equal(new Set(randomQuestions.map((question) => question.id)).size, 10);
+const challengeSource = questions.slice(0, 20);
+const firstTenMastered = challengeSource.slice(10).map((question) => question.id);
+const challengeWithTenUnmastered = questionRepo.getChallengeQuestions({
+  limit: 10,
+  sourceQuestions: challengeSource,
+  everCorrectQuestionIds: firstTenMastered,
+});
+assert.equal(challengeWithTenUnmastered.length, 10);
+assert(challengeWithTenUnmastered.every((question) => !firstTenMastered.includes(question.id)));
+assert.equal(new Set(challengeWithTenUnmastered.map((question) => question.id)).size, 10);
+const sevenUnmastered = challengeSource.slice(0, 7).map((question) => question.id);
+const challengeWithSevenUnmastered = questionRepo.getChallengeQuestions({
+  limit: 10,
+  sourceQuestions: challengeSource,
+  everCorrectQuestionIds: challengeSource.slice(7).map((question) => question.id),
+});
+assert.deepEqual(new Set(challengeWithSevenUnmastered.slice(0, 7).map((question) => question.id)), new Set(sevenUnmastered));
+assert.equal(new Set(challengeWithSevenUnmastered.map((question) => question.id)).size, 10);
+const challengeWithNoUnmastered = questionRepo.getChallengeQuestions({
+  limit: 10,
+  sourceQuestions: challengeSource,
+  everCorrectQuestionIds: challengeSource.map((question) => question.id),
+});
+assert.equal(challengeWithNoUnmastered.length, 10);
+assert.equal(new Set(challengeWithNoUnmastered.map((question) => question.id)).size, 10);
 const { toDateKey } = load('lib/utils/date');
 const now = new Date();
 const records = [
@@ -68,6 +93,17 @@ assert.equal(nextProgress.records.at(-1).examRound, officialQuestion.examRound);
 assert.equal(nextProgress.records.at(-1).correctChoice, officialQuestion.correctChoice);
 assert.equal(nextProgress.questionStats[officialQuestion.id].answerCount, 1);
 assert.equal(nextProgress.questionStats[officialQuestion.id].incorrectCount, 0);
+const legacyCorrectProgress = {
+  ...progressRepo.emptyProgress,
+  records: [
+    { questionId: officialQuestion.id, isCorrect: false },
+    { questionId: questions[1].id, isCorrect: true },
+  ],
+  questionStats: {
+    [officialQuestion.id]: { questionId: officialQuestion.id, correctCount: 1 },
+  },
+};
+assert.deepEqual(new Set(progressRepo.getEverCorrectQuestionIds(legacyCorrectProgress)), new Set([officialQuestion.id, questions[1].id]));
 const multiCorrectQuestion = questions.find((question) => question.correctChoices.length > 1);
 assert(multiCorrectQuestion, 'one multi-correct question is retained');
 assert.equal(
@@ -92,7 +128,7 @@ for (const type of ['correct', 'wrong']) {
   }
 }
 for (const count of [3, 5, 7, 10]) assert.equal(getMascotReaction('streak', count).id, `streak-${count}`);
-console.log('PASS: question CSV conversion, validation, countdown boundaries, progress metadata, session resume, calendar aggregation, storage compatibility, reactions');
+console.log('PASS: question CSV conversion, challenge prioritization, countdown boundaries, progress metadata, session resume, calendar aggregation, storage compatibility, reactions');
 
 async function browserChecks() {
   const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');

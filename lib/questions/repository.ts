@@ -53,6 +53,34 @@ export function getRandomQuestions(limit = 10, recentlyAnsweredIds: readonly str
   return [...shuffle(notRecent), ...shuffle(recent)].slice(0, Math.min(limit, questions.length));
 }
 
+export type ChallengeQuestionOptions = {
+  limit?: number;
+  everCorrectQuestionIds?: readonly string[];
+  sourceQuestions?: readonly Question[];
+};
+
+export function getChallengeQuestions({
+  limit = 10,
+  everCorrectQuestionIds = [],
+  sourceQuestions = questions,
+}: ChallengeQuestionOptions = {}): Question[] {
+  const availableQuestions = [...sourceQuestions];
+  const targetCount = Math.min(limit, availableQuestions.length);
+  const everCorrectIds = new Set(everCorrectQuestionIds);
+  const unmasteredQuestions = availableQuestions.filter((question) => !everCorrectIds.has(question.id));
+
+  if (unmasteredQuestions.length >= targetCount) {
+    return shuffle(unmasteredQuestions).slice(0, targetCount);
+  }
+
+  if (unmasteredQuestions.length === 0) {
+    return shuffle(availableQuestions).slice(0, targetCount);
+  }
+
+  const masteredQuestions = availableQuestions.filter((question) => everCorrectIds.has(question.id));
+  return [...shuffle(unmasteredQuestions), ...shuffle(masteredQuestions)].slice(0, targetCount);
+}
+
 export function getLearningScopeSummary(
   scopeQuestions: Question[],
   progress?: LearningProgress,
