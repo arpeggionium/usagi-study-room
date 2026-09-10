@@ -46,6 +46,12 @@ const randomQuestions = questionRepo.getRandomQuestions(10);
 assert.equal(randomQuestions.length, 10);
 assert.equal(new Set(randomQuestions.map((question) => question.id)).size, 10);
 const challengeSource = questions.slice(0, 20);
+const challengeWithTwentyUnmastered = questionRepo.getChallengeQuestions({
+  limit: 10,
+  sourceQuestions: challengeSource,
+});
+assert.equal(challengeWithTwentyUnmastered.length, 10);
+assert.equal(new Set(challengeWithTwentyUnmastered.map((question) => question.id)).size, 10);
 const firstTenMastered = challengeSource.slice(10).map((question) => question.id);
 const challengeWithTenUnmastered = questionRepo.getChallengeQuestions({
   limit: 10,
