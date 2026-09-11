@@ -14,7 +14,7 @@ export function QuestionDifficultyBadge({
   compact = false,
   className = "",
 }: QuestionDifficultyBadgeProps) {
-  if (!showDifficultyBadge || question.historicalAccuracy === undefined) return null;
+  if (!showDifficultyBadge) return null;
 
   const level = getDifficultyLevel(question.historicalAccuracy, question.difficultyLevel);
   if (level === "normal") return null;
@@ -27,7 +27,7 @@ export function QuestionDifficultyBadge({
   return (
     <span
       className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-black ${badgeClassName} ${className}`}
-      aria-label={`${label}。参考正答率 ${question.historicalAccuracy}%`}
+      aria-label={question.historicalAccuracy === undefined ? label : `${label}。参考正答率 ${question.historicalAccuracy}%`}
     >
       {compact && level === "hard" ? "難問" : label}
     </span>
