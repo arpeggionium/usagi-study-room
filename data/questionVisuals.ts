@@ -25,16 +25,16 @@ export type QuestionVisualAudit = {
 };
 
 // Keep visual metadata separate from the source CSV so future rounds can add images independently.
-// questionImage is intentionally omitted until the original Round 34 PDF is available for cropping.
 export const questionVisuals: Record<string, QuestionVisual> = {
   "2022-34-036": {
     hasVisual: true,
+    questionImage: "/questions/round34/036.png",
     questionImageAlt: "浴室の配置図",
     questionImageCaption: "第34回 問36の図",
     questionImagePosition: "afterQuestion",
     visualType: "diagram",
     required: true,
-    pdfPage: null,
+    pdfPage: 23,
     cropTarget: "Lさんの自宅の浴室の平面図と、浴槽、車いす、手すりなどを確認できる範囲",
   },
 };
@@ -45,9 +45,9 @@ export const round34VisualAudit: QuestionVisualAudit[] = [
     questionNumber: 36,
     visualType: "diagram",
     required: true,
-    pdfPage: null,
+    pdfPage: 23,
     cropTarget: "Lさんの自宅の浴室の平面図と、浴槽、車いす、手すりなどを確認できる範囲",
-    status: "source-needed",
+    status: "ready",
   },
 ];
 
