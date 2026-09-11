@@ -50,7 +50,7 @@ assert.equal(requiredVisualQuestion.visualType, 'diagram');
 assert.equal(requiredVisualQuestion.questionImage, '/questions/round34/036.png');
 assert.equal(questionVisuals['2022-34-036'].required, true);
 assert.equal(round34VisualAudit[0].status, 'ready');
-for (const visualQuestionId of ['2023-35-031', '2023-35-091', '2023-35-114', '2024-36-071', '2026-38-049']) {
+for (const visualQuestionId of ['2023-35-031', '2023-35-070', '2023-35-091', '2023-35-114', '2024-36-071', '2024-36-105', '2025-37-121', '2026-38-049']) {
   const visualQuestion = questionRepo.getQuestionById(visualQuestionId);
   assert(visualQuestion?.hasVisual, `${visualQuestionId} visual metadata is available`);
   assert(visualQuestion.questionImage, `${visualQuestionId} has a visual image`);
