@@ -42,7 +42,7 @@ export default function LearnPage() {
         <section className="space-y-3" aria-label="試験回から選ぶ">
           <div className="px-1">
             <p className="text-sm font-black text-berry">試験回から選ぶ</p>
-            <p className="mt-1 text-sm font-bold text-ink/65">途中で閉じても、次の問題から再開できます。</p>
+            <p className="mt-1 text-sm font-bold text-ink/65">問題一覧から、好きな問題を選んで始められます。</p>
           </div>
           {rounds.map((round) => (
             <article key={round.examRound} className="rounded-3xl border border-white/80 bg-white/80 p-4 shadow-soft">
@@ -57,10 +57,10 @@ export default function LearnPage() {
                 学習済み {round.answeredQuestionCount} / {round.questionCount}・正答率 {round.accuracy === null ? "--%" : `${round.accuracy}%`}
               </p>
               <Link
-                href={`/quiz?mode=round&round=${round.examRound}`}
+                href={`/round/${round.examRound}`}
                 className="mt-4 inline-flex min-h-11 items-center gap-1 rounded-full px-3 text-sm font-black text-leaf focus:outline-none focus:ring-4 focus:ring-peach"
               >
-                この回を解く <ChevronRight className="h-5 w-5" aria-hidden="true" />
+                問題一覧を見る <ChevronRight className="h-5 w-5" aria-hidden="true" />
               </Link>
             </article>
           ))}

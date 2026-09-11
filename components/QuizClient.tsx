@@ -69,13 +69,6 @@ function QuizSession({ query }: { query: string }) {
     const timer = window.setTimeout(() => setNeedsBreak(true), 30 * 60 * 1000);
     return () => window.clearTimeout(timer);
   }, []);
-  const [currentIndex, setCurrentIndex] = useState(
-    roundSession?.completed ? 0 : roundSession?.currentQuestionIndex ?? 0,
-  );
-  const [answer, setAnswer] = useState<AnswerState | null>(null);
-  const [correctCount, setCorrectCount] = useState(roundSession?.correctQuestionIds.length ?? 0);
-  const [wrongIds, setWrongIds] = useState(roundSession?.wrongQuestionIds ?? []);
-  const [finished, setFinished] = useState(false);
   const questions = useMemo(
     () =>
       buildQuestions(
@@ -87,6 +80,21 @@ function QuizSession({ query }: { query: string }) {
       ),
     [savedProgress, searchParams],
   );
+  const requestedQuestionNumber = Number(searchParams.get("start"));
+  const requestedStartIndex = questions.findIndex(
+    (candidate) => candidate.questionNumber === requestedQuestionNumber,
+  );
+  const [currentIndex, setCurrentIndex] = useState(
+    requestedStartIndex >= 0
+      ? requestedStartIndex
+      : roundSession?.completed
+        ? 0
+        : roundSession?.currentQuestionIndex ?? 0,
+  );
+  const [answer, setAnswer] = useState<AnswerState | null>(null);
+  const [correctCount, setCorrectCount] = useState(roundSession?.correctQuestionIds.length ?? 0);
+  const [wrongIds, setWrongIds] = useState(roundSession?.wrongQuestionIds ?? []);
+  const [finished, setFinished] = useState(false);
   const question = questions[currentIndex];
   const { questionTopRef, scheduleQuestionScroll } = useQuestionAutoScroll(question?.id);
 
@@ -309,6 +317,14 @@ function QuizSession({ query }: { query: string }) {
         )}
 
         <div className="text-center">
+          {examRound ? (
+            <Link
+              href={`/round/${examRound}`}
+              className="mr-2 inline-flex min-h-11 items-center justify-center rounded-full px-4 text-sm font-bold text-leaf focus:outline-none focus:ring-4 focus:ring-mint"
+            >
+              問題一覧へ
+            </Link>
+          ) : null}
           <Link
             href="/"
             className="inline-flex min-h-11 items-center justify-center rounded-full px-4 text-sm font-bold text-ink/60 focus:outline-none focus:ring-4 focus:ring-mint"

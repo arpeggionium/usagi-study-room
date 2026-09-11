@@ -11,7 +11,7 @@ function navClass(active: boolean): string {
 
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
-  const isLearn = pathname.startsWith("/quiz") || pathname.startsWith("/categories") || pathname.startsWith("/learn");
+  const isLearn = pathname.startsWith("/quiz") || pathname.startsWith("/categories") || pathname.startsWith("/learn") || pathname.startsWith("/round");
 
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,#ffe9df_0,#fffaf4_34%,#eef8f1_100%)] text-ink">
