@@ -22,6 +22,8 @@ export type QuestionVisualType = "diagram" | "illustration" | "symbol" | "chart"
 
 export type QuestionImagePosition = "beforeQuestion" | "afterQuestion" | "beforeChoices";
 
+export type QuestionDifficultyLevel = "normal" | "hard" | "very-hard";
+
 export type Question = {
   id: string;
   examYear: string;
@@ -42,4 +44,7 @@ export type Question = {
   questionImageCaption?: string;
   questionImagePosition?: QuestionImagePosition;
   visualType?: QuestionVisualType;
+  historicalAccuracy?: number;
+  difficultyLevel?: QuestionDifficultyLevel;
+  difficultySource?: string;
 };

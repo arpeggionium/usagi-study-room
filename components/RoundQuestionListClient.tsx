@@ -6,6 +6,7 @@ import { ArrowLeft, CheckCircle2, ChevronRight, Circle, ImageIcon, Play, XCircle
 import { ActionButton } from "@/components/ActionButton";
 import { AppShell } from "@/components/AppShell";
 import { Mascot } from "@/components/Mascot";
+import { QuestionDifficultyBadge } from "@/components/QuestionDifficultyBadge";
 import { getQuestionsByRound } from "@/lib/questions/repository";
 import { loadProgress } from "@/lib/progress/localProgressRepository";
 import type { LearningProgress } from "@/types/progress";
@@ -93,9 +94,12 @@ export function RoundQuestionListClient({ examRound }: RoundQuestionListClientPr
                       </span>
                     </span>
                     <span className="line-clamp-2 text-xs font-bold leading-5 text-ink/65">{question.category}</span>
-                    <span className="flex items-center justify-between text-xs font-black text-leaf">
-                      {statusLabel}
-                      <ChevronRight className="h-4 w-4" aria-hidden="true" />
+                    <span className="flex items-center justify-between gap-1 text-xs font-black text-leaf">
+                      <span className="flex items-center gap-1">
+                        {statusLabel}
+                        <QuestionDifficultyBadge question={question} compact />
+                      </span>
+                      <ChevronRight className="h-4 w-4 shrink-0" aria-hidden="true" />
                     </span>
                   </Link>
                 </li>

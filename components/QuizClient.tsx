@@ -8,6 +8,7 @@ import { ActionButton } from "@/components/ActionButton";
 import { AppShell } from "@/components/AppShell";
 import { Mascot } from "@/components/Mascot";
 import { QuestionVisual } from "@/components/QuestionVisual";
+import { QuestionDifficultyBadge } from "@/components/QuestionDifficultyBadge";
 import { getMascotReaction, type MascotReaction } from "@/data/mascot-reactions";
 import { getAllQuestions, getChallengeQuestions, getQuestionsByCategory, getQuestionsByRound } from "@/lib/questions/repository";
 import { getExamRoundSession, recordExamRoundAnswer, resetExamRoundSession } from "@/lib/progress/localExamSessionRepository";
@@ -226,9 +227,7 @@ function QuizSession({ query }: { query: string }) {
             </p>
           </div>
           <p className="mt-4 text-sm font-black text-berry">{question.category}</p>
-          {mode === "challenge" ? (
-            <p className="mt-2 text-sm font-bold text-ink/60">まだ正解していない問題を優先して出題しています。</p>
-          ) : null}
+          <QuestionDifficultyBadge question={question} className="mt-3" />
           <QuestionVisual question={question} position="beforeQuestion" />
           <h1 className="mt-2 text-xl font-black leading-8 text-ink">
             {question.questionText}

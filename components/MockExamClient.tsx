@@ -7,6 +7,8 @@ import { ActionButton } from "@/components/ActionButton";
 import { AppShell } from "@/components/AppShell";
 import { Mascot } from "@/components/Mascot";
 import { QuestionVisual } from "@/components/QuestionVisual";
+import { QuestionDifficultyBadge } from "@/components/QuestionDifficultyBadge";
+import { SHOW_DIFFICULTY_BADGE_IN_MOCK_EXAM } from "@/constants/questionDifficulty";
 import {
   clearMockExamSession,
   createMockExamSession,
@@ -210,6 +212,7 @@ export function MockExamClient() {
             </button>
           </div>
           <p className="mt-4 text-sm font-black text-berry">{currentQuestion.category}</p>
+          <QuestionDifficultyBadge question={currentQuestion} showDifficultyBadge={SHOW_DIFFICULTY_BADGE_IN_MOCK_EXAM} className="mt-3" />
           <QuestionVisual question={currentQuestion} position="beforeQuestion" />
           <h2 className="mt-2 whitespace-pre-line text-xl font-black leading-8 text-ink">{currentQuestion.questionText}</h2>
           <QuestionVisual question={currentQuestion} position="afterQuestion" />

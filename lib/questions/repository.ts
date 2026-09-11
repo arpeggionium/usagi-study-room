@@ -1,22 +1,31 @@
 import { QUESTION_CATEGORIES } from "@/constants/categories";
 import { questionDataReport, questions } from "@/data/questions.generated";
 import { questionVisuals } from "@/data/questionVisuals";
+import { questionDifficulty } from "@/data/questionDifficulty";
 import type { Question, QuestionCategory } from "@/types/question";
 import type { LearningProgress } from "@/types/progress";
 import { shuffle } from "@/lib/utils/random";
 
 const questionsWithVisuals: Question[] = questions.map((question) => {
   const visual = questionVisuals[question.id];
-  if (!visual) return question;
+  const difficulty = questionDifficulty[question.id];
+  if (!visual && !difficulty) return question;
 
   return {
     ...question,
-    hasVisual: visual.hasVisual,
-    questionImage: visual.questionImage,
-    questionImageAlt: visual.questionImageAlt,
-    questionImageCaption: visual.questionImageCaption,
-    questionImagePosition: visual.questionImagePosition,
-    visualType: visual.visualType,
+    ...(visual ? {
+      hasVisual: visual.hasVisual,
+      questionImage: visual.questionImage,
+      questionImageAlt: visual.questionImageAlt,
+      questionImageCaption: visual.questionImageCaption,
+      questionImagePosition: visual.questionImagePosition,
+      visualType: visual.visualType,
+    } : {}),
+    ...(difficulty ? {
+      historicalAccuracy: difficulty.historicalAccuracy,
+      difficultyLevel: difficulty.difficultyLevel,
+      difficultySource: difficulty.difficultySource,
+    } : {}),
   };
 });
 
