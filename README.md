@@ -55,7 +55,7 @@ CSV本文とは別に `data/questionVisuals.ts` で問題IDごとの図情報を
 
 ## 難問表示
 
-問題別の正答率は `data/questionDifficulty.ts` にCSV本文と分離して管理します。出典付きの `historicalAccuracy` と `difficultySource` を問題IDごとに登録すると、30%未満は「かなりの難問！」、30%以上50%未満は「難問！」を表示します。50%以上または正答率データ未登録の問題には表示しません。しきい値は `constants/questionDifficulty.ts` にまとめています。
+問題別の正答率と手動指定の難問は `data/questionDifficulty.ts` にCSV本文と分離して管理します。出典付きの `historicalAccuracy` を問題IDごとに登録すると、30%未満は「かなりの難問！」、30%以上50%未満は「難問！」を表示します。50%以上の正答率データには表示しません。正答率が未登録でも、根拠を `difficultySource` に記録した `difficultyLevel: "hard"` または `"very-hard"` を指定すれば、難問として表示できます。しきい値は `constants/questionDifficulty.ts` にまとめています。
 
 バッジは通常学習、10問チャレンジ、分野別、試験回別、復習、および試験回の問題一覧で共通表示します。模擬試験中は本番に近い表示を保つため、同じ定数で初期状態を非表示にしています。
 
