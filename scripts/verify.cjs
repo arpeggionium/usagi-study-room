@@ -25,6 +25,7 @@ const progressRepo = load('lib/progress/localProgressRepository');
 const sessionRepo = load('lib/progress/localExamSessionRepository');
 const { questions, questionDataReport } = load('data/questions.generated');
 const questionRepo = load('lib/questions/repository');
+const { questionVisuals, round34VisualAudit } = load('data/questionVisuals');
 assert.equal(questions.length, Object.keys(questionDataReport.roundCounts).length * 125);
 assert.equal(new Set(questions.map((question) => question.id)).size, questions.length);
 for (const question of questions) {
@@ -42,6 +43,13 @@ for (const [round, count] of Object.entries(questionDataReport.roundCounts)) {
 for (const [category, count] of Object.entries(questionDataReport.categoryCounts)) {
   assert.equal(questionRepo.getQuestionsByCategory(category).length, count);
 }
+const requiredVisualQuestion = questionRepo.getQuestionById('2022-34-036');
+assert(requiredVisualQuestion, 'Round 34 visual question is available');
+assert.equal(requiredVisualQuestion.hasVisual, true);
+assert.equal(requiredVisualQuestion.visualType, 'diagram');
+assert.equal(requiredVisualQuestion.questionImage, undefined);
+assert.equal(questionVisuals['2022-34-036'].required, true);
+assert.equal(round34VisualAudit[0].status, 'source-needed');
 const randomQuestions = questionRepo.getRandomQuestions(10);
 assert.equal(randomQuestions.length, 10);
 assert.equal(new Set(randomQuestions.map((question) => question.id)).size, 10);
@@ -134,7 +142,7 @@ for (const type of ['correct', 'wrong']) {
   }
 }
 for (const count of [3, 5, 7, 10]) assert.equal(getMascotReaction('streak', count).id, `streak-${count}`);
-console.log('PASS: question CSV conversion, challenge prioritization, countdown boundaries, progress metadata, session resume, calendar aggregation, storage compatibility, reactions');
+console.log('PASS: question CSV conversion, visual metadata, challenge prioritization, countdown boundaries, progress metadata, session resume, calendar aggregation, storage compatibility, reactions');
 
 async function browserChecks() {
   const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');

@@ -2,10 +2,11 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { CircleHelp, Flag, Grid2X2, Play, RotateCcw } from "lucide-react";
+import { CircleHelp, Flag, Grid2X2, Image as ImageIcon, Play, RotateCcw } from "lucide-react";
 import { ActionButton } from "@/components/ActionButton";
 import { AppShell } from "@/components/AppShell";
 import { Mascot } from "@/components/Mascot";
+import { QuestionVisual } from "@/components/QuestionVisual";
 import {
   clearMockExamSession,
   createMockExamSession,
@@ -182,7 +183,10 @@ export function MockExamClient() {
                       review ? "bg-berry text-white" : answered ? "bg-mint text-leaf" : "bg-cream text-ink/65"
                     } ${index === session.currentIndex ? "ring-2 ring-leaf" : ""}`}
                   >
-                    {index + 1}
+                    <span className="inline-flex items-center justify-center gap-0.5">
+                      {index + 1}
+                      {question.hasVisual ? <ImageIcon className="h-3 w-3" aria-label="図あり" /> : null}
+                    </span>
                   </button>
                 );
               })}
@@ -206,9 +210,12 @@ export function MockExamClient() {
             </button>
           </div>
           <p className="mt-4 text-sm font-black text-berry">{currentQuestion.category}</p>
+          <QuestionVisual question={currentQuestion} position="beforeQuestion" />
           <h2 className="mt-2 whitespace-pre-line text-xl font-black leading-8 text-ink">{currentQuestion.questionText}</h2>
+          <QuestionVisual question={currentQuestion} position="afterQuestion" />
         </section>
 
+        <QuestionVisual question={currentQuestion} position="beforeChoices" />
         <section className="space-y-3" aria-label="選択肢">
           {currentQuestion.choices.map((choice) => {
             const selected = session.answers[currentQuestion.id] === choice.id;

@@ -7,6 +7,7 @@ import { CheckCircle2, Home, XCircle } from "lucide-react";
 import { ActionButton } from "@/components/ActionButton";
 import { AppShell } from "@/components/AppShell";
 import { Mascot } from "@/components/Mascot";
+import { QuestionVisual } from "@/components/QuestionVisual";
 import { getMascotReaction, type MascotReaction } from "@/data/mascot-reactions";
 import { getAllQuestions, getChallengeQuestions, getQuestionsByCategory, getQuestionsByRound } from "@/lib/questions/repository";
 import { getExamRoundSession, recordExamRoundAnswer, resetExamRoundSession } from "@/lib/progress/localExamSessionRepository";
@@ -220,11 +221,14 @@ function QuizSession({ query }: { query: string }) {
           {mode === "challenge" ? (
             <p className="mt-2 text-sm font-bold text-ink/60">まだ正解していない問題を優先して出題しています。</p>
           ) : null}
+          <QuestionVisual question={question} position="beforeQuestion" />
           <h1 className="mt-2 text-xl font-black leading-8 text-ink">
             {question.questionText}
           </h1>
+          <QuestionVisual question={question} position="afterQuestion" />
         </section>
 
+        <QuestionVisual question={question} position="beforeChoices" />
         <section className="space-y-3" aria-label="選択肢">
           {question.choices.map((choice) => {
             const isSelected = answer?.selectedChoice === choice.id;

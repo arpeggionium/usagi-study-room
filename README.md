@@ -21,6 +21,7 @@ http://localhost:3000 を開きます。
 npm run build
 npm run lint
 npm run typecheck
+npm run validate:questions
 ```
 
 ## ディレクトリ構成
@@ -45,6 +46,12 @@ public/mascot/mofumaru/  もふまる画像10枚
 変換時に、ID重複、各回125問、各回の問題番号1〜125、全5択、正答、解説、分野を検証します。第34回の解説付きCSVを `data/kaigo_questions_2022_round34_with_explanations.csv` に置くと、ヘッダーなし16列形式を検証して自動統合します。現在受領した解説欠落版は `data/pending/` に保管しており、生成対象ではありません。現在のCSVには第36回・問題46だけ `correctChoice=4,5` の複数正答指定があります。原CSVを変更せず、アプリでは選択肢4または5を正答として扱い、両方を表示します。
 
 正規データを更新する場合は、同じ列構成のCSVに差し替えたうえで `npm run generate:questions` を実行してください。エラーが出た場合は生成を止め、該当行を表示します。出典・利用条件・法改正についても確認してください。
+
+## 図・表・イラスト問題
+
+CSV本文とは別に `data/questionVisuals.ts` で問題IDごとの図情報を管理します。元PDFから必要な図だけを切り出し、`public/questions/round34/036.png` のように配置した後、対応する `questionImage`、alt、表示位置を同ファイルへ追加してください。通常学習と模擬試験は同じ図表示コンポーネントを使い、図をタップすると拡大モーダルで確認できます。問題一覧には図付き問題のアイコンも表示されます。
+
+`npm run validate:questions` は、存在しない問題ID、altや表示位置の欠落、画像ファイルの不足を検査します。現在は第34回問36を必須図として監査済みですが、元PDFが未取得のため画像パスは未登録です。この状態は警告として表示されます。
 
 ## もふまる画像とリアクション
 

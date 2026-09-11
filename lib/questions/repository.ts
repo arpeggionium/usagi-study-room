@@ -1,8 +1,24 @@
 import { QUESTION_CATEGORIES } from "@/constants/categories";
 import { questionDataReport, questions } from "@/data/questions.generated";
+import { questionVisuals } from "@/data/questionVisuals";
 import type { Question, QuestionCategory } from "@/types/question";
 import type { LearningProgress } from "@/types/progress";
 import { shuffle } from "@/lib/utils/random";
+
+const questionsWithVisuals: Question[] = questions.map((question) => {
+  const visual = questionVisuals[question.id];
+  if (!visual) return question;
+
+  return {
+    ...question,
+    hasVisual: visual.hasVisual,
+    questionImage: visual.questionImage,
+    questionImageAlt: visual.questionImageAlt,
+    questionImageCaption: visual.questionImageCaption,
+    questionImagePosition: visual.questionImagePosition,
+    visualType: visual.visualType,
+  };
+});
 
 export type CategorySummary = {
   category: QuestionCategory;
@@ -25,32 +41,32 @@ export type LearningScopeSummary = Pick<
 >;
 
 export function getAllQuestions(): Question[] {
-  return questions;
+  return questionsWithVisuals;
 }
 
 export function getQuestionsByCategory(category: QuestionCategory): Question[] {
-  return questions.filter((question) => question.category === category);
+  return questionsWithVisuals.filter((question) => question.category === category);
 }
 
 export function getQuestionsByRound(examRound: string): Question[] {
-  return questions
+  return questionsWithVisuals
     .filter((question) => question.examRound === examRound)
     .sort((a, b) => a.questionNumber - b.questionNumber);
 }
 
 export function getQuestionById(id: string): Question | undefined {
-  return questions.find((question) => question.id === id);
+  return questionsWithVisuals.find((question) => question.id === id);
 }
 
 export function isKnownQuestionId(id: string): boolean {
-  return questions.some((question) => question.id === id);
+  return questionsWithVisuals.some((question) => question.id === id);
 }
 
 export function getRandomQuestions(limit = 10, recentlyAnsweredIds: readonly string[] = []): Question[] {
   const recentSet = new Set(recentlyAnsweredIds);
-  const notRecent = questions.filter((question) => !recentSet.has(question.id));
-  const recent = questions.filter((question) => recentSet.has(question.id));
-  return [...shuffle(notRecent), ...shuffle(recent)].slice(0, Math.min(limit, questions.length));
+  const notRecent = questionsWithVisuals.filter((question) => !recentSet.has(question.id));
+  const recent = questionsWithVisuals.filter((question) => recentSet.has(question.id));
+  return [...shuffle(notRecent), ...shuffle(recent)].slice(0, Math.min(limit, questionsWithVisuals.length));
 }
 
 export type ChallengeQuestionOptions = {
@@ -62,7 +78,7 @@ export type ChallengeQuestionOptions = {
 export function getChallengeQuestions({
   limit = 10,
   everCorrectQuestionIds = [],
-  sourceQuestions = questions,
+  sourceQuestions = questionsWithVisuals,
 }: ChallengeQuestionOptions = {}): Question[] {
   const availableQuestions = [...sourceQuestions];
   const targetCount = Math.min(limit, availableQuestions.length);
@@ -106,7 +122,7 @@ export function getCategorySummaries(progress?: LearningProgress): CategorySumma
 }
 
 export function getExamRoundSummaries(progress?: LearningProgress): ExamRoundSummary[] {
-  return [...new Set(questions.map((question) => question.examRound))]
+  return [...new Set(questionsWithVisuals.map((question) => question.examRound))]
     .sort((a, b) => Number(b) - Number(a))
     .map((examRound) => {
       const roundQuestions = getQuestionsByRound(examRound);

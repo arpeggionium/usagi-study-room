@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "generate:questions": "node scripts/generateQuestions.cjs",
+    "validate:questions": "node scripts/validateQuestionVisuals.cjs",
     "predev": "npm run generate:questions",
     "prebuild": "npm run generate:questions",
     "dev": "next dev",

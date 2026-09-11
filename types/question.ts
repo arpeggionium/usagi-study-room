@@ -18,6 +18,10 @@ export type Choice = {
   text: string;
 };
 
+export type QuestionVisualType = "diagram" | "illustration" | "symbol" | "chart" | "table";
+
+export type QuestionImagePosition = "beforeQuestion" | "afterQuestion" | "beforeChoices";
+
 export type Question = {
   id: string;
   examYear: string;
@@ -32,4 +36,10 @@ export type Question = {
   source: string;
   keywords: string[];
   needsLegalReview: boolean;
+  hasVisual?: boolean;
+  questionImage?: string;
+  questionImageAlt?: string;
+  questionImageCaption?: string;
+  questionImagePosition?: QuestionImagePosition;
+  visualType?: QuestionVisualType;
 };
