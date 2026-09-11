@@ -70,6 +70,17 @@ export const questionVisuals: Record<string, QuestionVisual> = {
     pdfPage: 60,
     cropTarget: "AからEのラベルが付いた脳の模式図",
   },
+  "2024-36-071": {
+    hasVisual: true,
+    questionImage: "/questions/round36/071.png",
+    questionImageAlt: "警戒レベルに関連する図記号",
+    questionImageCaption: "第36回 問71の図記号",
+    questionImagePosition: "afterQuestion",
+    visualType: "symbol",
+    required: true,
+    pdfPage: 4,
+    cropTarget: "洪水・内水氾濫を示す図記号",
+  },
   "2026-38-049": {
     hasVisual: true,
     questionImage: "/questions/round38/049.png",
@@ -96,6 +107,7 @@ export const round34VisualAudit: QuestionVisualAudit[] = [
   { questionId: "2023-35-031", questionNumber: 31, visualType: "illustration", required: true, pdfPage: 16, cropTarget: "格子模様と透明な部分があるテーブル、乳児、母親", status: "ready" },
   { questionId: "2023-35-091", questionNumber: 91, visualType: "illustration", required: true, pdfPage: 47, cropTarget: "目の周囲の清拭方向を示すAからEの図", status: "ready" },
   { questionId: "2023-35-114", questionNumber: 114, visualType: "diagram", required: true, pdfPage: 60, cropTarget: "AからEのラベルが付いた脳の模式図", status: "ready" },
+  { questionId: "2024-36-071", questionNumber: 71, visualType: "symbol", required: true, pdfPage: 4, cropTarget: "洪水・内水氾濫を示す図記号", status: "ready" },
   { questionId: "2026-38-049", questionNumber: 49, visualType: "illustration", required: true, pdfPage: 6, cropTarget: "腹部の清拭方向を示す選択肢1から5の図", status: "ready" },
 ];
 
