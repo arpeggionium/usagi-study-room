@@ -133,7 +133,48 @@ a {
   100% { opacity: 0; transform: translate(var(--x), var(--y)) scale(1.15) rotate(100deg); }
 }
 
+@keyframes difficulty-badge-hard-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.84);
+  }
+  42% {
+    opacity: 1;
+    transform: scale(1.18) rotate(0deg);
+  }
+  56% { transform: scale(1.1) rotate(-3deg); }
+  68% { transform: scale(1.06) rotate(3deg); }
+  80% { transform: scale(1.03) rotate(-1.5deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+@keyframes difficulty-badge-very-hard-pop {
+  0% {
+    opacity: 0;
+    transform: translateY(8px) scale(0.74) rotate(0deg);
+  }
+  28% {
+    opacity: 1;
+    transform: translateY(-4px) scale(1.28) rotate(0deg);
+  }
+  40% { transform: translateY(-3px) scale(1.18) rotate(-4deg); }
+  49% { transform: translateY(-3px) scale(1.15) rotate(4deg); }
+  58% { transform: translateY(-2px) scale(1.12) rotate(-3deg); }
+  67% { transform: translateY(-1px) scale(1.09) rotate(3deg); }
+  78% { transform: translateY(-6px) scale(1.05) rotate(0deg); }
+  89% { transform: translateY(2px) scale(0.99) rotate(0deg); }
+  100% { transform: translateY(0) scale(1) rotate(0deg); }
+}
+
 @media (prefers-reduced-motion: no-preference) {
+  .difficulty-badge-hard {
+    animation: difficulty-badge-hard-pop 0.9s cubic-bezier(0.2, 0.85, 0.3, 1) both;
+  }
+
+  .difficulty-badge-very-hard {
+    animation: difficulty-badge-very-hard-pop 1s cubic-bezier(0.2, 0.85, 0.3, 1) both;
+  }
+
   .mascot-bounce {
     animation: mascot-bounce 0.8s ease-in-out;
   }
@@ -173,6 +214,16 @@ a {
   .answer-feedback-streak .feedback-particles span {
     animation-duration: 1.35s;
   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .difficulty-badge-animate {
+    animation: none !important;
+  }
+}
+
+.difficulty-badge {
+  transform-origin: center;
 }
 
 .feedback-particles {

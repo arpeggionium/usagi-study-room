@@ -5,6 +5,7 @@ import { questionDifficulty } from "@/data/questionDifficulty";
 import type { Question, QuestionCategory } from "@/types/question";
 import type { LearningProgress } from "@/types/progress";
 import { shuffle } from "@/lib/utils/random";
+import { orderChallengeQuestionsByDifficulty } from "@/lib/questions/challengeOrder";
 
 const questionsWithVisuals: Question[] = questions.map((question) => {
   const visual = questionVisuals[question.id];
@@ -94,16 +95,18 @@ export function getChallengeQuestions({
   const everCorrectIds = new Set(everCorrectQuestionIds);
   const unmasteredQuestions = availableQuestions.filter((question) => !everCorrectIds.has(question.id));
 
+  let selectedQuestions: Question[];
+
   if (unmasteredQuestions.length >= targetCount) {
-    return shuffle(unmasteredQuestions).slice(0, targetCount);
+    selectedQuestions = shuffle(unmasteredQuestions).slice(0, targetCount);
+  } else if (unmasteredQuestions.length === 0) {
+    selectedQuestions = shuffle(availableQuestions).slice(0, targetCount);
+  } else {
+    const masteredQuestions = availableQuestions.filter((question) => everCorrectIds.has(question.id));
+    selectedQuestions = [...shuffle(unmasteredQuestions), ...shuffle(masteredQuestions)].slice(0, targetCount);
   }
 
-  if (unmasteredQuestions.length === 0) {
-    return shuffle(availableQuestions).slice(0, targetCount);
-  }
-
-  const masteredQuestions = availableQuestions.filter((question) => everCorrectIds.has(question.id));
-  return [...shuffle(unmasteredQuestions), ...shuffle(masteredQuestions)].slice(0, targetCount);
+  return orderChallengeQuestionsByDifficulty(selectedQuestions);
 }
 
 export function getLearningScopeSummary(

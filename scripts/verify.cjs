@@ -25,6 +25,7 @@ const progressRepo = load('lib/progress/localProgressRepository');
 const sessionRepo = load('lib/progress/localExamSessionRepository');
 const { questions, questionDataReport } = load('data/questions.generated');
 const questionRepo = load('lib/questions/repository');
+const { orderChallengeQuestionsByDifficulty } = load('lib/questions/challengeOrder');
 const { questionVisuals, round34VisualAudit } = load('data/questionVisuals');
 assert.equal(questions.length, Object.keys(questionDataReport.roundCounts).length * 125);
 assert.equal(new Set(questions.map((question) => question.id)).size, questions.length);
@@ -89,6 +90,59 @@ const challengeWithNoUnmastered = questionRepo.getChallengeQuestions({
 });
 assert.equal(challengeWithNoUnmastered.length, 10);
 assert.equal(new Set(challengeWithNoUnmastered.map((question) => question.id)).size, 10);
+const difficultyFixture = [
+  { ...questions[0], id: 'normal-2' },
+  { ...questions[1], id: 'hard-2', difficultyLevel: 'hard' },
+  { ...questions[2], id: 'very-hard-1', difficultyLevel: 'very-hard' },
+  { ...questions[3], id: 'normal-1' },
+  { ...questions[4], id: 'hard-1', difficultyLevel: 'hard' },
+];
+const orderedDifficultyFixture = orderChallengeQuestionsByDifficulty(difficultyFixture);
+assert.deepEqual(
+  orderedDifficultyFixture.map((question) => question.id),
+  ['normal-2', 'normal-1', 'hard-2', 'hard-1', 'very-hard-1'],
+);
+assert.deepEqual(
+  new Set(orderedDifficultyFixture.map((question) => question.id)),
+  new Set(difficultyFixture.map((question) => question.id)),
+);
+const integratedChallengeOrder = questionRepo.getChallengeQuestions({
+  limit: difficultyFixture.length,
+  sourceQuestions: difficultyFixture,
+});
+assert.deepEqual(
+  new Set(integratedChallengeOrder.map((question) => question.id)),
+  new Set(difficultyFixture.map((question) => question.id)),
+);
+assert.deepEqual(
+  integratedChallengeOrder.map((question) => question.difficultyLevel ?? 'normal'),
+  [...integratedChallengeOrder]
+    .sort((a, b) => ({ normal: 0, hard: 1, 'very-hard': 2 }[a.difficultyLevel ?? 'normal']) - ({ normal: 0, hard: 1, 'very-hard': 2 }[b.difficultyLevel ?? 'normal']))
+    .map((question) => question.difficultyLevel ?? 'normal'),
+);
+assert.deepEqual(
+  orderChallengeQuestionsByDifficulty(difficultyFixture.filter((question) => !question.difficultyLevel))
+    .map((question) => question.id),
+  ['normal-2', 'normal-1'],
+);
+const multipleVeryHardFixture = orderChallengeQuestionsByDifficulty([
+  { ...questions[5], id: 'very-hard-2', difficultyLevel: 'very-hard' },
+  { ...questions[6], id: 'normal-3' },
+  { ...questions[7], id: 'very-hard-3', difficultyLevel: 'very-hard' },
+  { ...questions[8], id: 'hard-3', difficultyLevel: 'hard' },
+]);
+assert.deepEqual(
+  multipleVeryHardFixture.map((question) => question.id),
+  ['normal-3', 'hard-3', 'very-hard-2', 'very-hard-3'],
+);
+assert.deepEqual(
+  orderChallengeQuestionsByDifficulty([
+    { ...questions[9], id: 'accuracy-hard', historicalAccuracy: 40 },
+    { ...questions[10], id: 'accuracy-normal', historicalAccuracy: 60 },
+    { ...questions[11], id: 'accuracy-very-hard', historicalAccuracy: 20 },
+  ]).map((question) => question.id),
+  ['accuracy-normal', 'accuracy-hard', 'accuracy-very-hard'],
+);
 const { toDateKey } = load('lib/utils/date');
 const now = new Date();
 const records = [
@@ -147,7 +201,7 @@ for (const type of ['correct', 'wrong']) {
   }
 }
 for (const count of [3, 5, 7, 10]) assert.equal(getMascotReaction('streak', count).id, `streak-${count}`);
-console.log('PASS: question CSV conversion, visual metadata, challenge prioritization, countdown boundaries, progress metadata, session resume, calendar aggregation, storage compatibility, reactions');
+console.log('PASS: question CSV conversion, visual metadata, challenge prioritization and difficulty ordering, countdown boundaries, progress metadata, session resume, calendar aggregation, storage compatibility, reactions');
 
 async function browserChecks() {
   const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');

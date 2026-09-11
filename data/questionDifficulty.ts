@@ -10,7 +10,7 @@ export type QuestionDifficultyMetadata = {
   difficultySource: string;
 };
 
-const userSelectedHardQuestionIds = [
+const userSelectedVeryHardQuestionIds = [
   "2022-34-001",
   "2022-34-006",
   "2022-34-011",
@@ -38,10 +38,10 @@ const userSelectedHardQuestionIds = [
 // Keep curated difficulty markers separate from the question CSV. Historical accuracy
 // can be added later when a sourced figure becomes available.
 export const questionDifficulty: Record<string, QuestionDifficultyMetadata> = Object.fromEntries(
-  userSelectedHardQuestionIds.map((questionId) => [
+  userSelectedVeryHardQuestionIds.map((questionId) => [
     questionId,
     {
-      difficultyLevel: "hard",
+      difficultyLevel: "very-hard",
       difficultySource: "ユーザー指定の難問リスト（2026-09-11）",
     },
   ]),

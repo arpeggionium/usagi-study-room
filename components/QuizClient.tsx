@@ -227,7 +227,7 @@ function QuizSession({ query }: { query: string }) {
             </p>
           </div>
           <p className="mt-4 text-sm font-black text-berry">{question.category}</p>
-          <QuestionDifficultyBadge question={question} className="mt-3" />
+          <QuestionDifficultyBadge key={question.id} question={question} animate className="mt-3" />
           <QuestionVisual question={question} position="beforeQuestion" />
           <h1 className="mt-2 text-xl font-black leading-8 text-ink">
             {question.questionText}
