@@ -2,6 +2,7 @@ import { QUESTION_CATEGORIES } from "@/constants/categories";
 import { questionDataReport, questions } from "@/data/questions.generated";
 import { questionVisuals } from "@/data/questionVisuals";
 import { questionDifficulty } from "@/data/questionDifficulty";
+import { invalidQuestionIds } from "@/data/questionStatus";
 import type { Question, QuestionCategory } from "@/types/question";
 import type { LearningProgress } from "@/types/progress";
 import { shuffle } from "@/lib/utils/random";
@@ -10,7 +11,8 @@ import { orderChallengeQuestionsByDifficulty } from "@/lib/questions/challengeOr
 const questionsWithVisuals: Question[] = questions.map((question) => {
   const visual = questionVisuals[question.id];
   const difficulty = questionDifficulty[question.id];
-  if (!visual && !difficulty) return question;
+  const isInvalidQuestion = invalidQuestionIds.has(question.id);
+  if (!visual && !difficulty && !isInvalidQuestion) return question;
 
   return {
     ...question,
@@ -27,6 +29,7 @@ const questionsWithVisuals: Question[] = questions.map((question) => {
       difficultyLevel: difficulty.difficultyLevel,
       difficultySource: difficulty.difficultySource,
     } : {}),
+    ...(isInvalidQuestion ? { isInvalidQuestion: true } : {}),
   };
 });
 

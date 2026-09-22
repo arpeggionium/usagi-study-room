@@ -47,4 +47,5 @@ export type Question = {
   historicalAccuracy?: number;
   difficultyLevel?: QuestionDifficultyLevel;
   difficultySource?: string;
+  isInvalidQuestion?: boolean;
 };

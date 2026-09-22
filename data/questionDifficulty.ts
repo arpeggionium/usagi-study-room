@@ -11,6 +11,7 @@ export type QuestionDifficultyMetadata = {
 };
 
 const userSelectedVeryHardQuestionIds = [
+  "2021-33-069",
   "2022-34-001",
   "2022-34-006",
   "2022-34-011",

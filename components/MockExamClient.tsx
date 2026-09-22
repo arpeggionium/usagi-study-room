@@ -318,7 +318,11 @@ function MockExamResult({ session, questions, onStartNew }: { session: MockExamS
               </summary>
               <div className="mt-4 space-y-3 text-sm leading-6">
                 <p className="font-bold text-ink/70">自分の回答: {answerText(result.question, result.selectedChoice)}</p>
-                <p className="font-bold text-leaf">正答: {result.question.choices.filter((choice) => result.question.correctChoices.includes(choice.id)).map((choice) => `${choice.id}. ${choice.text}`).join(" / ")}</p>
+                {result.question.isInvalidQuestion ? (
+                  <p className="font-bold text-leaf">この問題は不成立のため、回答者全員が得点となります。</p>
+                ) : (
+                  <p className="font-bold text-leaf">正答: {result.question.choices.filter((choice) => result.question.correctChoices.includes(choice.id)).map((choice) => `${choice.id}. ${choice.text}`).join(" / ")}</p>
+                )}
                 <p className="whitespace-pre-line text-ink/80">{result.question.explanation}</p>
                 {result.question.needsLegalReview ? <p className="rounded-2xl bg-peach/60 p-3 font-bold text-ink/75">この問題は法制度・統計等の変更により、現在の内容と異なる可能性があります。</p> : null}
                 <p className="break-words text-xs text-ink/60">出典: {result.question.source}</p>

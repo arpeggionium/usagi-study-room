@@ -37,13 +37,22 @@ for (const question of questions) {
   assert(question.category);
 }
 assert.equal(questionDataReport.explanationBlankCount, 0);
-assert.equal(questionDataReport.multiCorrectCount, 1);
+assert.equal(questionDataReport.multiCorrectCount, 2);
 for (const [round, count] of Object.entries(questionDataReport.roundCounts)) {
   assert.equal(questionRepo.getQuestionsByRound(round).length, count);
 }
 for (const [category, count] of Object.entries(questionDataReport.categoryCounts)) {
   assert.equal(questionRepo.getQuestionsByCategory(category).length, count);
 }
+for (const visualQuestionId of ['2021-33-040', '2021-33-051']) {
+  const visualQuestion = questionRepo.getQuestionById(visualQuestionId);
+  assert(visualQuestion?.hasVisual, `${visualQuestionId} visual metadata is available`);
+  assert(visualQuestion.questionImage, `${visualQuestionId} has a visual image`);
+}
+const invalidRound33Question = questionRepo.getQuestionById('2021-33-116');
+assert(invalidRound33Question, 'Round 33 invalid question is available');
+assert.equal(invalidRound33Question.isInvalidQuestion, true);
+assert.deepEqual(invalidRound33Question.correctChoices, ['1', '2', '3', '4', '5']);
 const requiredVisualQuestion = questionRepo.getQuestionById('2022-34-036');
 assert(requiredVisualQuestion, 'Round 34 visual question is available');
 assert.equal(requiredVisualQuestion.hasVisual, true);

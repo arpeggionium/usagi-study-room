@@ -17,6 +17,7 @@ const expectedHeaders = [
 const sourceDefinitions = [
   { path: path.join(root, "data", "kaigo_questions_2016-2026_with_explanations.csv"), rounds: ["35", "36", "37", "38"], hasHeader: true, hasIndexColumn: false },
   { path: path.join(root, "data", "kaigo_questions_2022_round34_with_explanations.csv"), rounds: ["34"], hasHeader: true, hasIndexColumn: true },
+  { path: path.join(root, "data", "kaigo_questions_2021_round33_with_explanations.csv"), rounds: ["33"], hasHeader: true, hasIndexColumn: true },
 ];
 const sources = sourceDefinitions.filter((source) => fs.existsSync(source.path));
 

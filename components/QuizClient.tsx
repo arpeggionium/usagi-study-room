@@ -239,7 +239,7 @@ function QuizSession({ query }: { query: string }) {
         <section className="space-y-3" aria-label="選択肢">
           {question.choices.map((choice) => {
             const isSelected = answer?.selectedChoice === choice.id;
-            const isCorrectChoice = answer && question.correctChoices.includes(choice.id);
+            const isCorrectChoice = answer && !question.isInvalidQuestion && question.correctChoices.includes(choice.id);
             const isWrongSelected = answer && isSelected && !answer.isCorrect;
             const stateClass = isCorrectChoice
               ? "border-leaf bg-mint"
@@ -285,9 +285,13 @@ function QuizSession({ query }: { query: string }) {
                 {answer.isCorrect ? "正解！" : "おしい！"}
               </p>
               <p className="mt-2 text-base font-bold text-ink/70">{answer.reaction.message}</p>
-              <p className="mt-2 text-base font-bold text-leaf">
-                正答: {correctChoices.map((choice) => `${choice.id}. ${choice.text}`).join(" / ")}
-              </p>
+              {question.isInvalidQuestion ? (
+                <p className="mt-2 text-base font-bold text-leaf">この問題は不成立のため、回答者全員が得点となります。</p>
+              ) : (
+                <p className="mt-2 text-base font-bold text-leaf">
+                  正答: {correctChoices.map((choice) => `${choice.id}. ${choice.text}`).join(" / ")}
+                </p>
+              )}
               <p className="mt-4 whitespace-pre-line text-base font-medium leading-7 text-ink/80">
                 {question.explanation}
               </p>

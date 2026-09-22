@@ -26,6 +26,28 @@ export type QuestionVisualAudit = {
 
 // Keep visual metadata separate from the source CSV so future rounds can add images independently.
 export const questionVisuals: Record<string, QuestionVisual> = {
+  "2021-33-040": {
+    hasVisual: true,
+    questionImage: "/questions/round33/040.png",
+    questionImageAlt: "仰臥位から側臥位へ体位変換する利用者の図。力点の候補としてAからEが示されている。",
+    questionImageCaption: "第33回 問40の図",
+    questionImagePosition: "afterQuestion",
+    visualType: "illustration",
+    required: true,
+    pdfPage: null,
+    cropTarget: "仰臥位から側臥位へ体位変換する利用者と、AからEの力点の候補",
+  },
+  "2021-33-051": {
+    hasVisual: true,
+    questionImage: "/questions/round33/051.png",
+    questionImageAlt: "洗濯表示の記号。洗濯桶の中に30と表示され、下に一本の線がある。",
+    questionImageCaption: "第33回 問51の洗濯表示",
+    questionImagePosition: "afterQuestion",
+    visualType: "symbol",
+    required: true,
+    pdfPage: null,
+    cropTarget: "30と下線が示された洗濯表示の記号",
+  },
   "2022-34-036": {
     hasVisual: true,
     questionImage: "/questions/round34/036.png",
@@ -128,6 +150,8 @@ export const questionVisuals: Record<string, QuestionVisual> = {
 };
 
 export const round34VisualAudit: QuestionVisualAudit[] = [
+  { questionId: "2021-33-040", questionNumber: 40, visualType: "illustration", required: true, pdfPage: null, cropTarget: "仰臥位から側臥位へ体位変換する利用者と、AからEの力点の候補", status: "ready" },
+  { questionId: "2021-33-051", questionNumber: 51, visualType: "symbol", required: true, pdfPage: null, cropTarget: "30と下線が示された洗濯表示の記号", status: "ready" },
   {
     questionId: "2022-34-036",
     questionNumber: 36,
