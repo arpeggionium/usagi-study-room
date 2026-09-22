@@ -11,10 +11,12 @@ import { QuestionVisual } from "@/components/QuestionVisual";
 import { QuestionDifficultyBadge } from "@/components/QuestionDifficultyBadge";
 import { getMascotReaction, type MascotReaction } from "@/data/mascot-reactions";
 import { getAllQuestions, getChallengeQuestions, getQuestionsByCategory, getQuestionsByRound } from "@/lib/questions/repository";
+import { selectWeaknessReviewQuestions } from "@/lib/progress/categoryAnalysis";
 import { getExamRoundSession, recordExamRoundAnswer, resetExamRoundSession } from "@/lib/progress/localExamSessionRepository";
 import { getEverCorrectQuestionIds, loadProgress, recordAnswer } from "@/lib/progress/localProgressRepository";
 import { useQuestionAutoScroll } from "@/lib/hooks/useQuestionAutoScroll";
 import type { Question } from "@/types/question";
+import type { LearningProgress } from "@/types/progress";
 
 type AnswerState = {
   selectedChoice: string;
@@ -27,7 +29,7 @@ function buildQuestions(
   category: string | null,
   ids: string | null,
   round: string | null,
-  everCorrectQuestionIds: string[],
+  progress: LearningProgress,
 ): Question[] {
   if (ids) {
     const idSet = ids.split(",").filter(Boolean);
@@ -35,6 +37,10 @@ function buildQuestions(
     return idSet
       .map((id) => questions.find((question) => question.id === id))
       .filter((question): question is Question => Boolean(question));
+  }
+
+  if (mode === "weaknessReview" && category) {
+    return selectWeaknessReviewQuestions(category as Question["category"], getAllQuestions(), progress);
   }
 
   if (category) {
@@ -45,7 +51,7 @@ function buildQuestions(
     return getQuestionsByRound(round);
   }
 
-  return getChallengeQuestions({ everCorrectQuestionIds });
+  return getChallengeQuestions({ everCorrectQuestionIds: getEverCorrectQuestionIds(progress) });
 }
 
 export function QuizClient() {
@@ -59,6 +65,7 @@ export function QuizClient() {
 function QuizSession({ query }: { query: string }) {
   const searchParams = useMemo(() => new URLSearchParams(query), [query]);
   const mode = searchParams.get("mode");
+  const weaknessReviewCategory = mode === "weaknessReview" ? searchParams.get("category") : null;
   const examRound = mode === "round" ? searchParams.get("round") : null;
   const savedProgress = useMemo(() => loadProgress(), []);
   const roundSession = useMemo(
@@ -77,7 +84,7 @@ function QuizSession({ query }: { query: string }) {
         searchParams.get("category"),
         searchParams.get("ids"),
         searchParams.get("round"),
-        getEverCorrectQuestionIds(savedProgress),
+        savedProgress,
       ),
     [savedProgress, searchParams],
   );
@@ -174,7 +181,7 @@ function QuizSession({ query }: { query: string }) {
         <div className="space-y-5">
           <Mascot mood={rate >= 80 ? "celebrate" : "cheer"} message={resultMessage} />
           <section className="surface text-center">
-            <p className="text-sm font-black text-berry">結果</p>
+            <p className="text-sm font-black text-berry">{weaknessReviewCategory ? `「${weaknessReviewCategory}」を復習しました` : "結果"}</p>
             <p className="mt-3 text-5xl font-black text-ink">
               {correctCount}/{questions.length}
             </p>
@@ -185,8 +192,9 @@ function QuizSession({ query }: { query: string }) {
           </section>
           <div className="grid gap-3">
             <ActionButton onClick={restart} variant="primary">
-              もう一度
+              {weaknessReviewCategory ? "もう一度5問復習" : "もう一度"}
             </ActionButton>
+            {weaknessReviewCategory ? <ActionButton href="/analysis" variant="soft">学習分析へ戻る</ActionButton> : null}
             <ActionButton
               href={wrongIds.length > 0 ? `/quiz?ids=${wrongIds.join(",")}` : "/review"}
               variant="secondary"

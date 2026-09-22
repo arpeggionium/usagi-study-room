@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { BookOpen, CalendarDays, ChartNoAxesColumn, Home } from "lucide-react";
+import { BookOpen, CalendarDays, ChartNoAxesColumn, Home, RotateCcw } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 function navClass(active: boolean): string {
@@ -40,7 +40,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         aria-label="主要ナビゲーション"
         className="fixed inset-x-0 bottom-0 z-10 border-t border-white/70 bg-white/90 px-4 pt-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] shadow-[0_-8px_30px_rgba(80,70,55,0.08)] backdrop-blur"
       >
-        <div className="mx-auto grid max-w-3xl grid-cols-4 gap-2">
+        <div className="mx-auto grid max-w-3xl grid-cols-5 gap-2">
           <Link aria-current={pathname === "/" ? "page" : undefined} className={navClass(pathname === "/")} href="/">
             <Home className="h-5 w-5" aria-hidden="true" />
             ホーム
@@ -53,8 +53,12 @@ export function AppShell({ children }: { children: ReactNode }) {
             <CalendarDays className="h-5 w-5" aria-hidden="true" />
             カレンダー
           </Link>
-          <Link aria-current={pathname.startsWith("/review") ? "page" : undefined} className={navClass(pathname.startsWith("/review"))} href="/review">
+          <Link aria-current={pathname.startsWith("/analysis") ? "page" : undefined} className={navClass(pathname.startsWith("/analysis"))} href="/analysis">
             <ChartNoAxesColumn className="h-5 w-5" aria-hidden="true" />
+            分析
+          </Link>
+          <Link aria-current={pathname.startsWith("/review") ? "page" : undefined} className={navClass(pathname.startsWith("/review"))} href="/review">
+            <RotateCcw className="h-5 w-5" aria-hidden="true" />
             記録
           </Link>
         </div>

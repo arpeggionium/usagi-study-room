@@ -26,6 +26,7 @@ const sessionRepo = load('lib/progress/localExamSessionRepository');
 const { questions, questionDataReport } = load('data/questions.generated');
 const questionRepo = load('lib/questions/repository');
 const { orderChallengeQuestionsByDifficulty } = load('lib/questions/challengeOrder');
+const { getCategoryLearningStatus, getCategoryStats, getWeakCategories, selectWeaknessReviewQuestions } = load('lib/progress/categoryAnalysis');
 const { questionVisuals, round34VisualAudit } = load('data/questionVisuals');
 assert.equal(questions.length, Object.keys(questionDataReport.roundCounts).length * 125);
 assert.equal(new Set(questions.map((question) => question.id)).size, questions.length);
@@ -37,6 +38,20 @@ for (const question of questions) {
   assert(question.category);
 }
 assert.equal(questionDataReport.explanationBlankCount, 0);
+assert.equal(getCategoryLearningStatus(0, null), 'collecting');
+assert.equal(getCategoryLearningStatus(4, 0), 'collecting');
+assert.equal(getCategoryLearningStatus(5, 0), 'weak');
+assert.equal(getCategoryLearningStatus(5, 49), 'weak');
+assert.equal(getCategoryLearningStatus(5, 50), 'improving');
+assert.equal(getCategoryLearningStatus(5, 69), 'improving');
+assert.equal(getCategoryLearningStatus(5, 70), 'strong');
+assert.equal(getCategoryLearningStatus(5, 100), 'strong');
+const analysisQuestion = questions[0];
+const analysisProgress = { records: Array.from({ length: 5 }, (_, index) => ({ questionId: analysisQuestion.id, category: analysisQuestion.category, isCorrect: index === 0, answeredAt: `2026-01-0${index + 1}T00:00:00.000Z` })), questionStats: { [analysisQuestion.id]: { questionId: analysisQuestion.id, answerCount: 5, correctCount: 1, incorrectCount: 4, lastAnsweredAt: '2026-01-05T00:00:00.000Z' } }, wrongQuestionIds: [analysisQuestion.id], currentCorrectStreak: 0, todaySolvedCount: 0, continuousStudyDays: 0, lastStudiedDate: null };
+const analysisStats = getCategoryStats([analysisQuestion.category], analysisProgress);
+assert.equal(analysisStats[0].status, 'weak');
+assert.equal(getWeakCategories(analysisStats)[0].category, analysisQuestion.category);
+assert.deepEqual(selectWeaknessReviewQuestions(analysisQuestion.category, [analysisQuestion], analysisProgress, 5, () => 0.5).map((question) => question.id), [analysisQuestion.id]);
 assert.equal(questionDataReport.multiCorrectCount, 2);
 for (const [round, count] of Object.entries(questionDataReport.roundCounts)) {
   assert.equal(questionRepo.getQuestionsByRound(round).length, count);

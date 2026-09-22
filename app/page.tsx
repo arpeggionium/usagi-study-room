@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import {
   CalendarDays,
+  ChartNoAxesColumn,
   ClipboardCheck,
   Flame,
   ListChecks,
@@ -59,6 +60,9 @@ export default function HomePage() {
               <Sparkles className="h-5 w-5" aria-hidden="true" />
               10問チャレンジ
             </span>
+          </ActionButton>
+          <ActionButton href="/analysis" variant="soft">
+            <span className="flex items-center gap-2"><ChartNoAxesColumn className="h-5 w-5" aria-hidden="true" />学習分析</span>
           </ActionButton>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <ActionButton href="/mock-exam" variant="soft">

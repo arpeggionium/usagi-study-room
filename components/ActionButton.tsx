@@ -8,6 +8,7 @@ type ActionButtonProps = {
   variant?: "primary" | "secondary" | "soft";
   disabled?: boolean;
   ariaLabel?: string;
+  className?: string;
 };
 
 const variantClasses = {
@@ -23,8 +24,9 @@ export function ActionButton({
   variant = "primary",
   disabled,
   ariaLabel,
+  className: additionalClassName,
 }: ActionButtonProps) {
-  const className = `inline-flex min-h-14 w-full items-center justify-center rounded-2xl px-5 py-3 text-center text-base font-black transition focus:outline-none focus:ring-4 focus:ring-peach disabled:cursor-not-allowed disabled:opacity-50 ${variantClasses[variant]}`;
+  const className = `inline-flex min-h-14 w-full items-center justify-center rounded-2xl px-5 py-3 text-center text-base font-black transition focus:outline-none focus:ring-4 focus:ring-peach disabled:cursor-not-allowed disabled:opacity-50 ${variantClasses[variant]} ${additionalClassName ?? ""}`;
 
   if (href && !disabled) {
     return (
