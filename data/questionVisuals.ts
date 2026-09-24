@@ -26,6 +26,28 @@ export type QuestionVisualAudit = {
 
 // Keep visual metadata separate from the source CSV so future rounds can add images independently.
 export const questionVisuals: Record<string, QuestionVisual> = {
+  "2020-32-042": {
+    hasVisual: true,
+    questionImage: "/questions/round32/042.webp",
+    questionImageAlt: "左右の足と、X・Yで足浴の位置を示す図",
+    questionImageCaption: "第32回 問42の図",
+    questionImagePosition: "afterQuestion",
+    visualType: "illustration",
+    required: true,
+    pdfPage: null,
+    cropTarget: "左右の足と、X・Yで足浴の位置を示す図全体",
+  },
+  "2020-32-050": {
+    hasVisual: true,
+    questionImage: "/questions/round32/050.webp",
+    questionImageAlt: "ベッド柵（サイドレール）の位置をAからEで示す図",
+    questionImageCaption: "第32回 問50の図",
+    questionImagePosition: "afterQuestion",
+    visualType: "diagram",
+    required: true,
+    pdfPage: null,
+    cropTarget: "枕とベッド柵（サイドレール）、AからEの位置を示すベッドの図全体",
+  },
   "2021-33-040": {
     hasVisual: true,
     questionImage: "/questions/round33/040.png",
@@ -150,6 +172,8 @@ export const questionVisuals: Record<string, QuestionVisual> = {
 };
 
 export const round34VisualAudit: QuestionVisualAudit[] = [
+  { questionId: "2020-32-042", questionNumber: 42, visualType: "illustration", required: true, pdfPage: null, cropTarget: "左右の足と、X・Yで足浴の位置を示す図全体", status: "ready" },
+  { questionId: "2020-32-050", questionNumber: 50, visualType: "diagram", required: true, pdfPage: null, cropTarget: "枕とベッド柵（サイドレール）、AからEの位置を示すベッドの図全体", status: "ready" },
   { questionId: "2021-33-040", questionNumber: 40, visualType: "illustration", required: true, pdfPage: null, cropTarget: "仰臥位から側臥位へ体位変換する利用者と、AからEの力点の候補", status: "ready" },
   { questionId: "2021-33-051", questionNumber: 51, visualType: "symbol", required: true, pdfPage: null, cropTarget: "30と下線が示された洗濯表示の記号", status: "ready" },
   {

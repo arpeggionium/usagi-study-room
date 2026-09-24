@@ -59,7 +59,7 @@ for (const [round, count] of Object.entries(questionDataReport.roundCounts)) {
 for (const [category, count] of Object.entries(questionDataReport.categoryCounts)) {
   assert.equal(questionRepo.getQuestionsByCategory(category).length, count);
 }
-for (const visualQuestionId of ['2021-33-040', '2021-33-051']) {
+for (const visualQuestionId of ['2020-32-042', '2020-32-050', '2021-33-040', '2021-33-051']) {
   const visualQuestion = questionRepo.getQuestionById(visualQuestionId);
   assert(visualQuestion?.hasVisual, `${visualQuestionId} visual metadata is available`);
   assert(visualQuestion.questionImage, `${visualQuestionId} has a visual image`);
