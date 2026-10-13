@@ -26,6 +26,7 @@ const sessionRepo = load('lib/progress/localExamSessionRepository');
 const { questions, questionDataReport } = load('data/questions.generated');
 const questionRepo = load('lib/questions/repository');
 const { orderChallengeQuestionsByDifficulty } = load('lib/questions/challengeOrder');
+const { selectHardChallengeQuestions } = load('lib/questions/hardChallenge');
 const { getCategoryLearningStatus, getCategoryStats, getWeakCategories, selectWeaknessReviewQuestions } = load('lib/progress/categoryAnalysis');
 const { questionVisuals, round34VisualAudit } = load('data/questionVisuals');
 assert.equal(questions.length, Object.keys(questionDataReport.roundCounts).length * 125);
@@ -169,6 +170,19 @@ assert.deepEqual(
   ]).map((question) => question.id),
   ['accuracy-normal', 'accuracy-hard', 'accuracy-very-hard'],
 );
+const hardChallengeFixture = [
+  { ...questions[0], id: 'hard-challenge-hard-1', difficultyLevel: 'hard' },
+  { ...questions[1], id: 'hard-challenge-hard-2', difficultyLevel: 'hard' },
+  { ...questions[2], id: 'hard-challenge-very-hard-1', difficultyLevel: 'very-hard' },
+  { ...questions[3], id: 'hard-challenge-very-hard-2', difficultyLevel: 'very-hard' },
+];
+const hardChallengeQuestions = selectHardChallengeQuestions(hardChallengeFixture, (items) => [...items]);
+assert.equal(hardChallengeQuestions.length, 3);
+assert.equal(hardChallengeQuestions.at(-1).difficultyLevel, 'very-hard');
+assert.equal(new Set(hardChallengeQuestions.map((question) => question.id)).size, 3);
+assert.equal(questionRepo.getQuestionById('2020-32-084')?.difficultyLevel, 'very-hard');
+assert.equal(questionRepo.getQuestionById('2020-32-007')?.difficultyLevel, 'hard');
+assert.equal(questionRepo.getQuestionById('2022-34-006')?.difficultySource, 'ユーザー指定の難問リスト（2026-09-11）');
 const { toDateKey } = load('lib/utils/date');
 const now = new Date();
 const records = [

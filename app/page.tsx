@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import {
   CalendarDays,
+  Crown,
   ChartNoAxesColumn,
   ClipboardCheck,
   Flame,
@@ -59,6 +60,12 @@ export default function HomePage() {
             <span className="flex items-center gap-2">
               <Sparkles className="h-5 w-5" aria-hidden="true" />
               10問チャレンジ
+            </span>
+          </ActionButton>
+          <ActionButton href="/quiz?mode=hardChallenge" variant="secondary">
+            <span className="flex items-center gap-2">
+              <Crown className="h-5 w-5" aria-hidden="true" />
+              難問に挑戦（3問）
             </span>
           </ActionButton>
           <ActionButton href="/analysis" variant="soft">

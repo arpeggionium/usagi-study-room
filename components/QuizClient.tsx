@@ -11,6 +11,7 @@ import { QuestionVisual } from "@/components/QuestionVisual";
 import { QuestionDifficultyBadge } from "@/components/QuestionDifficultyBadge";
 import { getMascotReaction, type MascotReaction } from "@/data/mascot-reactions";
 import { getAllQuestions, getChallengeQuestions, getQuestionsByCategory, getQuestionsByRound } from "@/lib/questions/repository";
+import { selectHardChallengeQuestions } from "@/lib/questions/hardChallenge";
 import { selectWeaknessReviewQuestions } from "@/lib/progress/categoryAnalysis";
 import { getExamRoundSession, recordExamRoundAnswer, resetExamRoundSession } from "@/lib/progress/localExamSessionRepository";
 import { getEverCorrectQuestionIds, loadProgress, recordAnswer } from "@/lib/progress/localProgressRepository";
@@ -43,6 +44,10 @@ function buildQuestions(
     return selectWeaknessReviewQuestions(category as Question["category"], getAllQuestions(), progress);
   }
 
+  if (mode === "hardChallenge") {
+    return selectHardChallengeQuestions(getAllQuestions());
+  }
+
   if (category) {
     return getQuestionsByCategory(category as Question["category"]);
   }
@@ -66,6 +71,7 @@ function QuizSession({ query }: { query: string }) {
   const searchParams = useMemo(() => new URLSearchParams(query), [query]);
   const mode = searchParams.get("mode");
   const weaknessReviewCategory = mode === "weaknessReview" ? searchParams.get("category") : null;
+  const isHardChallenge = mode === "hardChallenge";
   const examRound = mode === "round" ? searchParams.get("round") : null;
   const savedProgress = useMemo(() => loadProgress(), []);
   const roundSession = useMemo(
@@ -170,7 +176,9 @@ function QuizSession({ query }: { query: string }) {
   if (finished) {
     const rate = Math.round((correctCount / questions.length) * 100);
     const resultMessage =
-      rate >= 80
+      isHardChallenge && correctCount === questions.length && questions.length === 3
+        ? "すごい！難問に挑戦を3問すべて正解！難しい問題を乗り越える力がしっかり付いているよ。もふまるも大拍手！"
+        : rate >= 80
         ? "かなり仕上がってきたね。自信にしていこう！"
         : rate >= 50
           ? "いい積み重ね。間違えたところを見直せばもっと強くなるよ。"
@@ -179,9 +187,9 @@ function QuizSession({ query }: { query: string }) {
     return (
       <AppShell>
         <div className="space-y-5">
-          <Mascot mood={rate >= 80 ? "celebrate" : "cheer"} message={resultMessage} />
+          <Mascot mood={isHardChallenge && correctCount === questions.length ? "celebrate" : rate >= 80 ? "celebrate" : "cheer"} message={resultMessage} />
           <section className="surface text-center">
-            <p className="text-sm font-black text-berry">{weaknessReviewCategory ? `「${weaknessReviewCategory}」を復習しました` : "結果"}</p>
+            <p className="text-sm font-black text-berry">{weaknessReviewCategory ? `「${weaknessReviewCategory}」を復習しました` : isHardChallenge ? "難問に挑戦の結果" : "結果"}</p>
             <p className="mt-3 text-5xl font-black text-ink">
               {correctCount}/{questions.length}
             </p>
@@ -192,7 +200,7 @@ function QuizSession({ query }: { query: string }) {
           </section>
           <div className="grid gap-3">
             <ActionButton onClick={restart} variant="primary">
-              {weaknessReviewCategory ? "もう一度5問復習" : "もう一度"}
+              {weaknessReviewCategory ? "もう一度5問復習" : isHardChallenge ? "もう一度難問に挑戦" : "もう一度"}
             </ActionButton>
             {weaknessReviewCategory ? <ActionButton href="/analysis" variant="soft">学習分析へ戻る</ActionButton> : null}
             <ActionButton

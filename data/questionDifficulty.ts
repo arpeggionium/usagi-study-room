@@ -48,6 +48,21 @@ const learnerMarkedHardQuestionIds = [
   "2019-31-013", "2019-31-019", "2019-31-022", "2019-31-031", "2019-31-035", "2019-31-039", "2019-31-050", "2019-31-065", "2019-31-067", "2019-31-088", "2019-31-096", "2019-31-106", "2019-31-110", "2019-31-112", "2019-31-116", "2019-31-120", "2019-31-125",
 ] as const;
 
+// Existing IDs in the curated lists above intentionally remain untouched.
+const learnerMistakeVeryHardQuestionIds32To38 = [
+  "2020-32-084", "2021-33-041", "2021-33-055", "2022-34-087", "2022-34-116", "2022-34-119", "2023-35-083", "2023-35-086", "2023-35-093", "2024-36-098", "2025-37-036", "2025-37-061", "2025-37-099", "2025-37-100", "2026-38-057", "2026-38-123",
+] as const;
+
+const learnerMarkedHardQuestionIds32To38 = [
+  "2020-32-007", "2020-32-017", "2020-32-021", "2020-32-042", "2020-32-047", "2020-32-050", "2020-32-052", "2020-32-105", "2020-32-115",
+  "2021-33-014", "2021-33-017", "2021-33-035", "2021-33-038", "2021-33-040", "2021-33-045", "2021-33-067", "2021-33-078", "2021-33-099",
+  "2022-34-008", "2022-34-031", "2022-34-041", "2022-34-056", "2022-34-089", "2022-34-106", "2022-34-115",
+  "2023-35-005", "2023-35-070", "2023-35-073", "2023-35-078", "2023-35-091", "2023-35-092", "2023-35-117", "2023-35-122",
+  "2024-36-012", "2024-36-046", "2024-36-071", "2024-36-082", "2024-36-083", "2024-36-087", "2024-36-105", "2024-36-116",
+  "2025-37-014", "2025-37-028", "2025-37-032", "2025-37-059", "2025-37-086", "2025-37-091", "2025-37-098", "2025-37-119",
+  "2026-38-006", "2026-38-033", "2026-38-049", "2026-38-054", "2026-38-096", "2026-38-117", "2026-38-124",
+] as const;
+
 // Keep curated difficulty markers separate from the question CSV. Historical accuracy
 // can be added later when a sourced figure becomes available.
 export const questionDifficulty: Record<string, QuestionDifficultyMetadata> = Object.fromEntries([
@@ -62,6 +77,14 @@ export const questionDifficulty: Record<string, QuestionDifficultyMetadata> = Ob
   ...learnerMarkedHardQuestionIds.map((questionId) => [
     questionId,
     { difficultyLevel: "hard", difficultySource: "ユーザーの学習記録（迷った問題）" },
+  ]),
+  ...learnerMistakeVeryHardQuestionIds32To38.map((questionId) => [
+    questionId,
+    { difficultyLevel: "very-hard", difficultySource: "ユーザーの学習記録（第32〜38回・誤答）" },
+  ]),
+  ...learnerMarkedHardQuestionIds32To38.map((questionId) => [
+    questionId,
+    { difficultyLevel: "hard", difficultySource: "ユーザーの学習記録（第32〜38回・迷った問題）" },
   ]),
 ]);
 

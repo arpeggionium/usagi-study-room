@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { BookOpen, ChevronRight, ClipboardCheck, ListChecks, Sparkles } from "lucide-react";
+import { BookOpen, ChevronRight, ClipboardCheck, Crown, ListChecks, Sparkles } from "lucide-react";
 import { ActionButton } from "@/components/ActionButton";
 import { AppShell } from "@/components/AppShell";
 import { Mascot } from "@/components/Mascot";
@@ -31,6 +31,9 @@ export default function LearnPage() {
         <section className="grid gap-3" aria-label="学び方">
           <ActionButton href="/quiz?mode=challenge" variant="primary">
             <span className="flex items-center gap-2"><Sparkles className="h-5 w-5" aria-hidden="true" />10問チャレンジ</span>
+          </ActionButton>
+          <ActionButton href="/quiz?mode=hardChallenge" variant="secondary">
+            <span className="flex items-center gap-2"><Crown className="h-5 w-5" aria-hidden="true" />難問に挑戦（3問）</span>
           </ActionButton>
           <ActionButton href="/mock-exam" variant="soft">
             <span className="flex items-center gap-2"><ClipboardCheck className="h-5 w-5" aria-hidden="true" />{hasMockExamToResume ? "模擬試験を再開" : "模擬試験 125問"}</span>
