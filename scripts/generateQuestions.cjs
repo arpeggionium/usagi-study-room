@@ -19,6 +19,9 @@ const sourceDefinitions = [
   { path: path.join(root, "data", "kaigo_questions_2022_round34_with_explanations.csv"), rounds: ["34"], hasHeader: true, hasIndexColumn: true },
   { path: path.join(root, "data", "kaigo_questions_2021_round33_with_explanations.csv"), rounds: ["33"], hasHeader: true, hasIndexColumn: true },
   { path: path.join(root, "data", "kaigo_questions_2020_round32_with_explanations.csv"), rounds: ["32"], hasHeader: true, hasIndexColumn: true },
+  { path: path.join(root, "data", "kaigo_questions_2019_round31_with_explanations.csv"), rounds: ["31"], hasHeader: true, hasIndexColumn: true },
+  { path: path.join(root, "data", "kaigo_questions_2018_round30_with_explanations.csv"), rounds: ["30"], hasHeader: true, hasIndexColumn: true },
+  { path: path.join(root, "data", "kaigo_questions_2017_round29_with_explanations.csv"), rounds: ["29"], hasHeader: true, hasIndexColumn: true },
 ];
 const sources = sourceDefinitions.filter((source) => fs.existsSync(source.path));
 

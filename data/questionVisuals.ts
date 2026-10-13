@@ -26,6 +26,39 @@ export type QuestionVisualAudit = {
 
 // Keep visual metadata separate from the source CSV so future rounds can add images independently.
 export const questionVisuals: Record<string, QuestionVisual> = {
+  "2017-29-038": {
+    hasVisual: true, questionImage: "/questions/round29/038.jpg", questionImageAlt: "扉を閉めた部屋を囲む窓AからEの位置を示す平面図", questionImageCaption: "第29回 問38の図", questionImagePosition: "afterQuestion", visualType: "diagram", required: true, pdfPage: null, cropTarget: "窓AからEを示す部屋の平面図全体",
+  },
+  "2017-29-057": {
+    hasVisual: true, questionImage: "/questions/round29/057.jpg", questionImageAlt: "右利きの場合の和食の配膳位置をAからDで示す図", questionImageCaption: "第29回 問57の図", questionImagePosition: "afterQuestion", visualType: "diagram", required: true, pdfPage: null, cropTarget: "米飯とAからDの器、箸を示す配膳図全体",
+  },
+  "2017-29-093": {
+    hasVisual: true, questionImage: "/questions/round29/093.jpg", questionImageAlt: "長さ約55cmの柄付きのくし型自助具", questionImageCaption: "第29回 問93の図", questionImagePosition: "afterQuestion", visualType: "illustration", required: true, pdfPage: null, cropTarget: "柄付きのくし型自助具全体",
+  },
+  "2018-30-043": {
+    hasVisual: true, questionImage: "/questions/round30/043.jpg", questionImageAlt: "U駅ホームの線路側、点状ブロック、AからEの位置を示す見取図", questionImageCaption: "第30回 問43の図", questionImagePosition: "afterQuestion", visualType: "diagram", required: true, pdfPage: null, cropTarget: "AからEと点状ブロックを示す駅ホームの見取図全体",
+  },
+  "2018-30-047": {
+    hasVisual: true, questionImage: "/questions/round30/047.jpg", questionImageAlt: "座位の人物の皮膚観察部位をAからEで示す前面と背面の図", questionImageCaption: "第30回 問47の図", questionImagePosition: "afterQuestion", visualType: "illustration", required: true, pdfPage: null, cropTarget: "AからEで皮膚観察部位を示す人物の前面と背面の図",
+  },
+  "2018-30-121": {
+    hasVisual: true, questionImage: "/questions/round30/121.jpg", questionImageAlt: "人物前面の温度を感じられる部位をAからEで示す図", questionImageCaption: "第30回 問121の図", questionImagePosition: "afterQuestion", visualType: "illustration", required: true, pdfPage: null, cropTarget: "AからEで温度を感じられる部位を示す人物の前面図",
+  },
+  "2019-31-022": {
+    hasVisual: true, questionImage: "/questions/round31/022.png", questionImageAlt: "土砂災害警戒区域を示す防災図記号", questionImageCaption: "第31回 問22の図記号", questionImagePosition: "afterQuestion", visualType: "symbol", required: true, pdfPage: null, cropTarget: "人物と黒い楕円で構成される防災図記号",
+  },
+  "2019-31-035": {
+    hasVisual: true, questionImage: "/questions/round31/035.png", questionImageAlt: "ヘルプマークを示す図記号", questionImageCaption: "第31回 問35のマーク", questionImagePosition: "afterQuestion", visualType: "symbol", required: true, pdfPage: null, cropTarget: "白い十字を付けた黒い人物の図記号",
+  },
+  "2019-31-055": {
+    hasVisual: true, questionImage: "/questions/round31/055.png", questionImageAlt: "自然乾燥を示す洗濯取扱い表示", questionImageCaption: "第31回 問55の取扱い表示", questionImagePosition: "afterQuestion", visualType: "symbol", required: true, pdfPage: null, cropTarget: "四角形と左上から右下への斜線、中央の横線で構成される取扱い表示",
+  },
+  "2019-31-078": {
+    hasVisual: true, questionImage: "/questions/round31/078.png", questionImageAlt: "要介護者と要支援者の介護が必要となった主な原因の構成割合を示す積み上げ棒グラフ", questionImageCaption: "第31回 問78の図", questionImagePosition: "afterQuestion", visualType: "chart", required: true, pdfPage: null, cropTarget: "要介護者・要支援者・総数の構成割合を示す積み上げ棒グラフ全体",
+  },
+  "2019-31-115": {
+    hasVisual: true, questionImage: "/questions/round31/115.png", questionImageAlt: "便器と手すりAからEの設置位置を示すトイレの平面図", questionImageCaption: "第31回 問115の図", questionImagePosition: "afterQuestion", visualType: "diagram", required: true, pdfPage: null, cropTarget: "便器と手すりAからEを示すトイレの平面図全体",
+  },
   "2020-32-042": {
     hasVisual: true,
     questionImage: "/questions/round32/042.webp",
@@ -172,6 +205,19 @@ export const questionVisuals: Record<string, QuestionVisual> = {
 };
 
 export const round34VisualAudit: QuestionVisualAudit[] = [
+  { questionId: "2017-29-038", questionNumber: 38, visualType: "diagram", required: true, pdfPage: null, cropTarget: "窓AからEを示す部屋の平面図全体", status: "ready" },
+  { questionId: "2017-29-057", questionNumber: 57, visualType: "diagram", required: true, pdfPage: null, cropTarget: "米飯とAからDの器、箸を示す配膳図全体", status: "ready" },
+  { questionId: "2017-29-093", questionNumber: 93, visualType: "illustration", required: true, pdfPage: null, cropTarget: "柄付きのくし型自助具全体", status: "ready" },
+  { questionId: "2017-29-102", questionNumber: 102, visualType: "table", required: true, pdfPage: null, cropTarget: "1日の必要エネルギー量の算出に必要な活動係数とストレス係数を示す図表", status: "source-needed" },
+  { questionId: "2017-29-111", questionNumber: 111, visualType: "illustration", required: true, pdfPage: null, cropTarget: "鼻腔内吸引時の吸引チューブの挿入範囲を示す図", status: "source-needed" },
+  { questionId: "2018-30-043", questionNumber: 43, visualType: "diagram", required: true, pdfPage: null, cropTarget: "AからEと点状ブロックを示す駅ホームの見取図全体", status: "ready" },
+  { questionId: "2018-30-047", questionNumber: 47, visualType: "illustration", required: true, pdfPage: null, cropTarget: "AからEで皮膚観察部位を示す人物の前面と背面の図", status: "ready" },
+  { questionId: "2018-30-121", questionNumber: 121, visualType: "illustration", required: true, pdfPage: null, cropTarget: "AからEで温度を感じられる部位を示す人物の前面図", status: "ready" },
+  { questionId: "2019-31-022", questionNumber: 22, visualType: "symbol", required: true, pdfPage: null, cropTarget: "人物と黒い楕円で構成される防災図記号", status: "ready" },
+  { questionId: "2019-31-035", questionNumber: 35, visualType: "symbol", required: true, pdfPage: null, cropTarget: "白い十字を付けた黒い人物の図記号", status: "ready" },
+  { questionId: "2019-31-055", questionNumber: 55, visualType: "symbol", required: true, pdfPage: null, cropTarget: "四角形と左上から右下への斜線、中央の横線で構成される取扱い表示", status: "ready" },
+  { questionId: "2019-31-078", questionNumber: 78, visualType: "chart", required: true, pdfPage: null, cropTarget: "要介護者・要支援者・総数の構成割合を示す積み上げ棒グラフ全体", status: "ready" },
+  { questionId: "2019-31-115", questionNumber: 115, visualType: "diagram", required: true, pdfPage: null, cropTarget: "便器と手すりAからEを示すトイレの平面図全体", status: "ready" },
   { questionId: "2020-32-042", questionNumber: 42, visualType: "illustration", required: true, pdfPage: null, cropTarget: "左右の足と、X・Yで足浴の位置を示す図全体", status: "ready" },
   { questionId: "2020-32-050", questionNumber: 50, visualType: "diagram", required: true, pdfPage: null, cropTarget: "枕とベッド柵（サイドレール）、AからEの位置を示すベッドの図全体", status: "ready" },
   { questionId: "2021-33-040", questionNumber: 40, visualType: "illustration", required: true, pdfPage: null, cropTarget: "仰臥位から側臥位へ体位変換する利用者と、AからEの力点の候補", status: "ready" },
