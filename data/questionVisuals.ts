@@ -35,6 +35,12 @@ export const questionVisuals: Record<string, QuestionVisual> = {
   "2017-29-093": {
     hasVisual: true, questionImage: "/questions/round29/093.jpg", questionImageAlt: "長さ約55cmの柄付きのくし型自助具", questionImageCaption: "第29回 問93の図", questionImagePosition: "afterQuestion", visualType: "illustration", required: true, pdfPage: null, cropTarget: "柄付きのくし型自助具全体",
   },
+  "2017-29-102": {
+    hasVisual: true, questionImage: "/questions/round29/102.jpg", questionImageAlt: "活動係数とストレス係数を示す表", questionImageCaption: "第29回 問102の図表", questionImagePosition: "afterQuestion", visualType: "table", required: true, pdfPage: null, cropTarget: "臥床生活・起床生活の活動係数と、侵襲なしなどのストレス係数を示す表全体",
+  },
+  "2017-29-111": {
+    hasVisual: true, questionImage: "/questions/round29/111.jpg", questionImageAlt: "鼻腔内吸引時の吸引チューブの挿入範囲をAからEで示す頭部の断面図", questionImageCaption: "第29回 問111の図", questionImagePosition: "afterQuestion", visualType: "illustration", required: true, pdfPage: null, cropTarget: "咽頭とAからEの挿入範囲を示す頭部の断面図全体",
+  },
   "2018-30-043": {
     hasVisual: true, questionImage: "/questions/round30/043.jpg", questionImageAlt: "U駅ホームの線路側、点状ブロック、AからEの位置を示す見取図", questionImageCaption: "第30回 問43の図", questionImagePosition: "afterQuestion", visualType: "diagram", required: true, pdfPage: null, cropTarget: "AからEと点状ブロックを示す駅ホームの見取図全体",
   },
@@ -208,8 +214,8 @@ export const round34VisualAudit: QuestionVisualAudit[] = [
   { questionId: "2017-29-038", questionNumber: 38, visualType: "diagram", required: true, pdfPage: null, cropTarget: "窓AからEを示す部屋の平面図全体", status: "ready" },
   { questionId: "2017-29-057", questionNumber: 57, visualType: "diagram", required: true, pdfPage: null, cropTarget: "米飯とAからDの器、箸を示す配膳図全体", status: "ready" },
   { questionId: "2017-29-093", questionNumber: 93, visualType: "illustration", required: true, pdfPage: null, cropTarget: "柄付きのくし型自助具全体", status: "ready" },
-  { questionId: "2017-29-102", questionNumber: 102, visualType: "table", required: true, pdfPage: null, cropTarget: "1日の必要エネルギー量の算出に必要な活動係数とストレス係数を示す図表", status: "source-needed" },
-  { questionId: "2017-29-111", questionNumber: 111, visualType: "illustration", required: true, pdfPage: null, cropTarget: "鼻腔内吸引時の吸引チューブの挿入範囲を示す図", status: "source-needed" },
+  { questionId: "2017-29-102", questionNumber: 102, visualType: "table", required: true, pdfPage: null, cropTarget: "臥床生活・起床生活の活動係数と、侵襲なしなどのストレス係数を示す表全体", status: "ready" },
+  { questionId: "2017-29-111", questionNumber: 111, visualType: "illustration", required: true, pdfPage: null, cropTarget: "咽頭とAからEの挿入範囲を示す頭部の断面図全体", status: "ready" },
   { questionId: "2018-30-043", questionNumber: 43, visualType: "diagram", required: true, pdfPage: null, cropTarget: "AからEと点状ブロックを示す駅ホームの見取図全体", status: "ready" },
   { questionId: "2018-30-047", questionNumber: 47, visualType: "illustration", required: true, pdfPage: null, cropTarget: "AからEで皮膚観察部位を示す人物の前面と背面の図", status: "ready" },
   { questionId: "2018-30-121", questionNumber: 121, visualType: "illustration", required: true, pdfPage: null, cropTarget: "AからEで温度を感じられる部位を示す人物の前面図", status: "ready" },

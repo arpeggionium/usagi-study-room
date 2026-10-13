@@ -59,13 +59,13 @@ for (const [round, count] of Object.entries(questionDataReport.roundCounts)) {
 for (const [category, count] of Object.entries(questionDataReport.categoryCounts)) {
   assert.equal(questionRepo.getQuestionsByCategory(category).length, count);
 }
-for (const visualQuestionId of ['2017-29-038', '2017-29-057', '2017-29-093', '2018-30-043', '2018-30-047', '2018-30-121', '2019-31-022', '2019-31-035', '2019-31-055', '2019-31-078', '2019-31-115', '2020-32-042', '2020-32-050', '2021-33-040', '2021-33-051']) {
+for (const visualQuestionId of ['2017-29-038', '2017-29-057', '2017-29-093', '2017-29-102', '2017-29-111', '2018-30-043', '2018-30-047', '2018-30-121', '2019-31-022', '2019-31-035', '2019-31-055', '2019-31-078', '2019-31-115', '2020-32-042', '2020-32-050', '2021-33-040', '2021-33-051']) {
   const visualQuestion = questionRepo.getQuestionById(visualQuestionId);
   assert(visualQuestion?.hasVisual, `${visualQuestionId} visual metadata is available`);
   assert(visualQuestion.questionImage, `${visualQuestionId} has a visual image`);
 }
-assert.equal(round34VisualAudit.find((audit) => audit.questionId === '2017-29-102')?.status, 'source-needed');
-assert.equal(round34VisualAudit.find((audit) => audit.questionId === '2017-29-111')?.status, 'source-needed');
+assert.equal(round34VisualAudit.find((audit) => audit.questionId === '2017-29-102')?.status, 'ready');
+assert.equal(round34VisualAudit.find((audit) => audit.questionId === '2017-29-111')?.status, 'ready');
 const invalidRound33Question = questionRepo.getQuestionById('2021-33-116');
 assert(invalidRound33Question, 'Round 33 invalid question is available');
 assert.equal(invalidRound33Question.isInvalidQuestion, true);
